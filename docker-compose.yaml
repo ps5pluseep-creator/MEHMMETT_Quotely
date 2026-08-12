@@ -1,0 +1,21 @@
+services:
+  bot:
+    build: .
+    env_file: .env
+    restart: always
+    # Single long-polling process; @grammyjs/runner handles concurrency.
+    command: node dist/index.js
+    ports:
+      # Health + Prometheus metrics (HEALTH_PORT, default 3000).
+      - "3000:3000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - MEHMMETT_Quotely
+
+networks:
+  MEHMMETT_Quotely:
+    driver: bridge
